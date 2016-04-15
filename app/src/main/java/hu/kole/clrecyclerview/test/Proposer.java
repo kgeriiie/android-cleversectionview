@@ -1,5 +1,6 @@
 package hu.kole.clrecyclerview.test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import hu.kole.cleversectionview.model.BaseSectionItemModel;
@@ -13,16 +14,16 @@ public class Proposer extends BaseSectionModel {
 
     public String id;
     public String title;
-    public List<ProposerItem> proposerItems;
+    public List<ProposerItem> proposerItems = new ArrayList<>();
 
     @Override
     public String getId() {
-        return null;
+        return id;
     }
 
     @Override
     public String getTitle() {
-        return null;
+        return title;
     }
 
     @Override

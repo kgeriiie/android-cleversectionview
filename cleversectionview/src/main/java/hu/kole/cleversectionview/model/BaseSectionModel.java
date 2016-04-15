@@ -49,4 +49,36 @@ public abstract class BaseSectionModel implements Cloneable{
             }
         };
     }
+
+    /**
+     * Is it a header item type at first place.
+     * @param <T>
+     * @return
+     */
+    public final <T extends BaseSectionItemModel> boolean isHeaderItemAtFirstPosition() {
+        List<T> sectionItems = getSectionItems();
+
+        if (sectionItems.size() > 0) {
+            return sectionItems.get(0).getViewType() == BaseSectionItemModel.TYPE_SECTION_HEADER;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Is it a footer item type at last place.
+     * @param <T>
+     * @return
+     */
+    public final <T extends BaseSectionItemModel> boolean isFooterItemAtLastPosition() {
+        List<T> sectionItems = getSectionItems();
+
+        if (sectionItems.size() > 0) {
+            int lastIndex = sectionItems.size() - 1;
+
+            return sectionItems.get(lastIndex).getViewType() == BaseSectionItemModel.TYPE_SECTION_FOOTER;
+        } else {
+            return false;
+        }
+    }
 }
