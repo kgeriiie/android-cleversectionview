@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
@@ -15,7 +14,7 @@ import java.util.Random;
 
 import hu.kole.cleversectionview.CleverSectionSpanSizeLookup;
 import hu.kole.cleversectionview.listeners.EndlessScrollListener;
-import hu.kole.cleversectionview.BaseSectionAdapter;
+import hu.kole.cleversectionview.BaseCleverSectionAdapter;
 import hu.kole.clrecyclerview.test.Proposer;
 import hu.kole.clrecyclerview.test.ProposerItem;
 import hu.kole.clrecyclerview.test.ProposerManager;
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         fillProposers(proposers);
 
-        adapter.setOnSectionItemClickListener(new BaseSectionAdapter.OnItemClickListener<ProposerItem>() {
+        adapter.setOnSectionItemClickListener(new BaseCleverSectionAdapter.OnItemClickListener<ProposerItem>() {
             @Override
             public void onItemClick(ProposerItem item) {
                 Log.d(TAG,"Clicked on item named: " + item.title);

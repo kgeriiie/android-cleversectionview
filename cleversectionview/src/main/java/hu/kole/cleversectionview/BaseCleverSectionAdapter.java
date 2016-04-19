@@ -3,7 +3,6 @@ package hu.kole.cleversectionview;
 import android.content.res.Resources;
 import android.graphics.PointF;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import hu.kole.cleversectionview.R;
 import hu.kole.cleversectionview.draganddrop.DragInfo;
 import hu.kole.cleversectionview.draganddrop.DragManager;
 import hu.kole.cleversectionview.listeners.EndlessScrollListener;
@@ -25,17 +23,17 @@ import hu.kole.cleversectionview.viewholder.LoaderItemViewHolder;
 /**
  * Created by koleszargergo on 4/7/16.
  */
-public abstract class BaseSectionAdapter<TModel extends BaseSectionModel, TModelItem extends  BaseSectionItemModel, TItemViewHolder extends BaseDragAndDropViewHolder, THeaderViewHolder extends RecyclerView.ViewHolder, TFooterViewHolder extends RecyclerView.ViewHolder>  extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel, TSectionItem extends  BaseSectionItemModel, TItemViewHolder extends BaseDragAndDropViewHolder, THeaderViewHolder extends RecyclerView.ViewHolder, TFooterViewHolder extends RecyclerView.ViewHolder>  extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private final static int CORRECTION = 1;
     private final static double FILLED_SECTION_IN_PERCENT = 0.8;
 
-    protected List<TModel> sections = new ArrayList<>();
-    private List<TModelItem> allRowItems = new ArrayList<>();
+    protected List<TSection> sections = new ArrayList<>();
+    private List<TSectionItem> allRowItems = new ArrayList<>();
 
     protected RecyclerView mConnectedRecyclerView;
 
-    protected OnItemClickListener<TModelItem> mOnSectionItemClickListener;
+    protected OnItemClickListener<TSectionItem> mOnSectionItemClickListener;
     protected EndlessScrollListener mEndlessScrollListener;
 
     private boolean isEndlessScrollListenerAdded = false;
@@ -47,7 +45,7 @@ public abstract class BaseSectionAdapter<TModel extends BaseSectionModel, TModel
     private int scrollState = RecyclerView.SCROLL_STATE_IDLE;
     private final PointF lastTouchPoint = new PointF(); // used to create ShadowBuilder
 
-    public BaseSectionAdapter(List<TModel> sectionList) {
+    public BaseCleverSectionAdapter(List<TSection> sectionList) {
 
         setHasStableIds(true);
 
@@ -62,27 +60,31 @@ public abstract class BaseSectionAdapter<TModel extends BaseSectionModel, TModel
         addEndlessScrollListener();
     }
 
-    protected final List<TModelItem> copySectionsIntoRealObjects() {
-        List<TModel> temp = cloneSectionList(this.sections);
-        List<TModelItem> sectionItems = new ArrayList<>();
+    /**
+     *  Create a one dimension array from this.sections two dimensional array. BaseCleverSectionAdapter will
+     * @return
+     */
+    protected final List<TSectionItem> copySectionsIntoRealObjects() {
+        List<TSection> temp = cloneSectionList(this.sections);
+        List<TSectionItem> sectionItems = new ArrayList<>();
 
-        for (TModel section : temp) {
-            List<TModelItem> sectionItemModels = section.getSectionItems();
+        for (TSection section : temp) {
+            List<TSectionItem> sectionItemModels = section.getSectionItems();
 
             if (sectionItemModels != null) {
                 if (section.isHeaderVisible() && !section.isHeaderItemAtFirstPosition()) {
-                    TModelItem header = BaseSectionItemModel.createHeaderItem(section.getId());
+                    TSectionItem header = BaseSectionItemModel.createHeaderItem(section.getId());
                     header.setParentId(section.getId());
                     sectionItemModels.add(0, header);
                 }
 
                 if (section.isFooterVisible() && !section.isFooterItemAtLastPosition()) {
-                    TModelItem footer = BaseSectionItemModel.createFooterItem(section.getId());
+                    TSectionItem footer = BaseSectionItemModel.createFooterItem(section.getId());
                     footer.setParentId(section.getId());
                     sectionItemModels.add(footer);
                 }
 
-                for (TModelItem item : sectionItemModels) {
+                for (TSectionItem item : sectionItemModels) {
                     item.setParentId(section.getId());
                 }
 
@@ -93,7 +95,7 @@ public abstract class BaseSectionAdapter<TModel extends BaseSectionModel, TModel
         return sectionItems;
     }
 
-    public void updateDataSet(List<TModel> data) {
+    public void updateDataSet(List<TSection> data) {
 
         isLoadMoreProgressVisible = false;
 
@@ -110,12 +112,12 @@ public abstract class BaseSectionAdapter<TModel extends BaseSectionModel, TModel
 
     public final void addShowMoreProgress() {
         if (!isLoadMoreProgressVisible && this.sections.size() > 0) {
-            TModel lastSection = this.sections.get(this.sections.size() -1);
+            TSection lastSection = this.sections.get(this.sections.size() -1);
 
             if (lastSection != null
                     && (lastSection.getSectionItems().size() == 0 || lastSection.getSectionItems().get(0).getViewType() != BaseSectionItemModel.VIEW_TYPE.TYPE_LOADER)) {
 
-                TModel loader = (TModel) new LoaderSectionItem();
+                TSection loader = (TSection) new LoaderSectionItem();
 
                 this.sections.add(loader);
 
@@ -131,7 +133,7 @@ public abstract class BaseSectionAdapter<TModel extends BaseSectionModel, TModel
 
     private final void removeShowMoreProgress() {
         if (isLoadMoreProgressVisible && this.sections.size() > 0) {
-            TModel lastSection = this.sections.get(this.sections.size() -1);
+            TSection lastSection = this.sections.get(this.sections.size() -1);
 
             if (lastSection != null && lastSection.getSectionItems().size() > 0 && lastSection.getSectionItems().get(0).getViewType() == BaseSectionItemModel.VIEW_TYPE.TYPE_LOADER) {
 
@@ -147,12 +149,12 @@ public abstract class BaseSectionAdapter<TModel extends BaseSectionModel, TModel
         }
     }
 
-    public TModelItem getItemAtPosition(int position) {
+    public TSectionItem getItemAtPosition(int position) {
         return this.allRowItems.get(position);
     }
 
-    public final TModel getSectionOfItem(TModelItem item) {
-        for (TModel section : sections) {
+    public final TSection getSectionOfItem(TSectionItem item) {
+        for (TSection section : sections) {
             if (section.getId().equalsIgnoreCase(item.getParentId())) {
                 return section;
             }
@@ -161,11 +163,11 @@ public abstract class BaseSectionAdapter<TModel extends BaseSectionModel, TModel
         return null;
     }
 
-    private final List<TModel> cloneSectionList(List<TModel> list) {
-        List<TModel> temp = new ArrayList<>();
+    private final List<TSection> cloneSectionList(List<TSection> list) {
+        List<TSection> temp = new ArrayList<>();
 
-        for (TModel model : this.sections) {
-            temp.add((TModel) model.clone());
+        for (TSection model : this.sections) {
+            temp.add((TSection) model.clone());
         }
 
         return temp;
@@ -232,7 +234,7 @@ public abstract class BaseSectionAdapter<TModel extends BaseSectionModel, TModel
 
     @Override
     public int getItemViewType(int position) {
-        TModelItem item = getItemAtPosition(position);
+        TSectionItem item = getItemAtPosition(position);
 
         if (item.getLayoutType() == item.getViewType()) {
             //In default case we return with view type.
@@ -266,8 +268,8 @@ public abstract class BaseSectionAdapter<TModel extends BaseSectionModel, TModel
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        TModelItem item = getItemAtPosition(position);
-        TModel section = getSectionOfItem(item);
+        TSectionItem item = getItemAtPosition(position);
+        TSection section = getSectionOfItem(item);
         int viewType = item.getViewType();
 
         if (viewType == BaseSectionItemModel.VIEW_TYPE.TYPE_SECTION_HEADER) {
@@ -295,10 +297,10 @@ public abstract class BaseSectionAdapter<TModel extends BaseSectionModel, TModel
     private final int convertToLayoutType(int rawViewType) {
         int type  = (rawViewType - CORRECTION);
 
-        if (type % TModelItem.TYPE_MASK == 0) {
+        if (type % TSectionItem.TYPE_MASK == 0) {
             return type;
         } else {
-            return type % TModelItem.TYPE_MASK;
+            return type % TSectionItem.TYPE_MASK;
         }
     }
 
@@ -308,16 +310,16 @@ public abstract class BaseSectionAdapter<TModel extends BaseSectionModel, TModel
     public abstract TItemViewHolder onCreateItemViewHolder(ViewGroup parent, int layoutType);
     public abstract TFooterViewHolder onCreateFooterViewHolder(ViewGroup parent, int layoutType);
 
-    public abstract void onBindHeaderViewHolder(THeaderViewHolder holder, TModel section, int layoutType);
-    public abstract void onBindItemViewHolder(TItemViewHolder holder, TModelItem item, int layoutType);
-    public abstract void onBindFooterViewHolder(TFooterViewHolder holder, TModel section, int layoutType);
+    public abstract void onBindHeaderViewHolder(THeaderViewHolder holder, TSection section, int layoutType);
+    public abstract void onBindItemViewHolder(TItemViewHolder holder, TSectionItem item, int layoutType);
+    public abstract void onBindFooterViewHolder(TFooterViewHolder holder, TSection section, int layoutType);
 
     public LoaderItemViewHolder onCreateLoaderViewHolder(ViewGroup parent, int layoutType) {
         View view = LayoutInflater.from(mConnectedRecyclerView.getContext()).inflate(R.layout.view_progress,parent,false);
         return new LoaderItemViewHolder(view);
     }
 
-    public void onBindLoaderViewHolder(LoaderItemViewHolder holder,TModel section, int layoutType) {
+    public void onBindLoaderViewHolder(LoaderItemViewHolder holder, TSection section, int layoutType) {
         //Not used yet.
     }
 
@@ -341,7 +343,7 @@ public abstract class BaseSectionAdapter<TModel extends BaseSectionModel, TModel
         if (!isEndlessScrollListenerAdded && this.mEndlessScrollListener != null) {
             int countOfFilledSection = 0;
 
-            for (TModel section : this.sections) {
+            for (TSection section : this.sections) {
                 if (section.getSectionItems().size() > 0) {
                     countOfFilledSection ++;
                 }
@@ -370,7 +372,7 @@ public abstract class BaseSectionAdapter<TModel extends BaseSectionModel, TModel
         void onItemClick(TModelItem item);
     }
 
-    public boolean isDraggingEnabledAtItemPosition(TModel section, TModelItem item) {
+    public boolean isDraggingEnabledAtItemPosition(TSection section, TSectionItem item) {
         return true;
     }
 
@@ -391,7 +393,7 @@ public abstract class BaseSectionAdapter<TModel extends BaseSectionModel, TModel
     public int getPositionForId(long id) {
         int pos = 0;
 
-        for (TModelItem item : this.allRowItems) {
+        for (TSectionItem item : this.allRowItems) {
             if (item.getId().hashCode() == id) {
                 return pos;
             }
@@ -402,11 +404,11 @@ public abstract class BaseSectionAdapter<TModel extends BaseSectionModel, TModel
     }
 
     public boolean move(int fromPosition, int toPosition) {
-        TModelItem itemAtFromPosition = getItemAtPosition(fromPosition);
-        TModelItem itemAtToPosition = getItemAtPosition(toPosition);
+        TSectionItem itemAtFromPosition = getItemAtPosition(fromPosition);
+        TSectionItem itemAtToPosition = getItemAtPosition(toPosition);
 
-        TModel fromSection = getSectionOfItem(itemAtFromPosition);
-        TModel toSection = getSectionOfItem(itemAtToPosition);
+        TSection fromSection = getSectionOfItem(itemAtFromPosition);
+        TSection toSection = getSectionOfItem(itemAtToPosition);
 
         if (fromSection.equals(toSection)
                 && isDraggingEnabledAtItemPosition(toSection,itemAtToPosition)

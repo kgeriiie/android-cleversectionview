@@ -1,14 +1,13 @@
 package hu.kole.clrecyclerview.test;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
 
-import hu.kole.cleversectionview.BaseSectionAdapter;
+import hu.kole.cleversectionview.BaseCleverSectionAdapter;
 import hu.kole.cleversectionview.model.BaseSectionItemModel;
 import hu.kole.cleversectionview.viewholder.BaseDragAndDropViewHolder;
 import hu.kole.clrecyclerview.R;
@@ -21,7 +20,7 @@ import hu.kole.clrecyclerview.viewholders.ProposerItemViewHolder;
  * Created by koleszargergo on 4/12/16.
  */
 
-public class TestAdapter extends BaseSectionAdapter<Proposer,ProposerItem,BaseDragAndDropViewHolder,ProposerHeaderViewHolder,ProposerFooterViewHolder> {
+public class TestAdapter extends BaseCleverSectionAdapter<Proposer,ProposerItem,BaseDragAndDropViewHolder,ProposerHeaderViewHolder,ProposerFooterViewHolder> {
 
     private Context mContext;
 

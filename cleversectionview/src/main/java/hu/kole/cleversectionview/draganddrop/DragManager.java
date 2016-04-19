@@ -8,7 +8,7 @@ import android.view.View;
 
 import java.lang.ref.WeakReference;
 
-import hu.kole.cleversectionview.BaseSectionAdapter;
+import hu.kole.cleversectionview.BaseCleverSectionAdapter;
 
 import static java.lang.Float.MIN_VALUE;
 
@@ -18,12 +18,12 @@ import static java.lang.Float.MIN_VALUE;
 public class DragManager implements View.OnDragListener {
 
     private final WeakReference<RecyclerView> recyclerViewRef;
-    private final BaseSectionAdapter<?,?,?,?,?> adapter;
+    private final BaseCleverSectionAdapter<?,?,?,?,?> adapter;
     private long draggingId = RecyclerView.NO_ID;
     private final PointF nextMoveTouchPoint = new PointF(MIN_VALUE, MIN_VALUE);
     @Nullable private DragInfo lastDragInfo;
 
-    public DragManager(RecyclerView recyclerView, BaseSectionAdapter<?,?,?,?,?> adapter) {
+    public DragManager(RecyclerView recyclerView, BaseCleverSectionAdapter<?,?,?,?,?> adapter) {
         this.recyclerViewRef = new WeakReference<>(recyclerView);
         this.adapter = adapter;
     }

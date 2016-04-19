@@ -9,10 +9,10 @@ import hu.kole.cleversectionview.model.BaseSectionItemModel;
  */
 public class CleverSectionSpanSizeLookup extends GridLayoutManager.SpanSizeLookup {
 
-    private BaseSectionAdapter<?,?,?,?,?> mAdapter = null;
+    private BaseCleverSectionAdapter<?,?,?,?,?> mAdapter = null;
     private GridLayoutManager mLayoutManager = null;
 
-    public CleverSectionSpanSizeLookup(BaseSectionAdapter<?,?,?,?,?> adapter, GridLayoutManager layoutManager) {
+    public CleverSectionSpanSizeLookup(BaseCleverSectionAdapter<?,?,?,?,?> adapter, GridLayoutManager layoutManager) {
         this.mAdapter = adapter;
         this.mLayoutManager = layoutManager;
     }

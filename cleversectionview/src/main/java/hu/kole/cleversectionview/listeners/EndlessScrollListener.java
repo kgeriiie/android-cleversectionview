@@ -2,9 +2,8 @@ package hu.kole.cleversectionview.listeners;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
-import hu.kole.cleversectionview.BaseSectionAdapter;
+import hu.kole.cleversectionview.BaseCleverSectionAdapter;
 
 /**
  * Created by koleszargergo on 4/18/16.
@@ -25,13 +24,13 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
 
     private LinearLayoutManager mLinearLayoutManager;
 
-    private BaseSectionAdapter mAdapter;
+    private BaseCleverSectionAdapter mAdapter;
 
     private boolean isProgressNeeded = false;
 
     private boolean isEndlessScrollEnabled = true;
 
-    public EndlessScrollListener(LinearLayoutManager layoutManager, BaseSectionAdapter adapter, boolean isProgressNeeded) {
+    public EndlessScrollListener(LinearLayoutManager layoutManager, BaseCleverSectionAdapter adapter, boolean isProgressNeeded) {
         this.mLinearLayoutManager = layoutManager;
         this.mAdapter = adapter;
         this.isProgressNeeded = isProgressNeeded;

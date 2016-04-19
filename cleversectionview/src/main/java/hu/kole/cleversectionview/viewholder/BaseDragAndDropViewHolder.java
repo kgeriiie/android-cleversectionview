@@ -7,16 +7,16 @@ import android.view.View;
 
 import hu.kole.cleversectionview.draganddrop.DragInfo;
 import hu.kole.cleversectionview.draganddrop.NoForegroundShadowBuilder;
-import hu.kole.cleversectionview.BaseSectionAdapter;
+import hu.kole.cleversectionview.BaseCleverSectionAdapter;
 
 /**
  * Created by koleszargergo on 4/19/16.
  */
 public class BaseDragAndDropViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
 
-    private final BaseSectionAdapter<?,?,?,?,?> mAdapter;
+    private final BaseCleverSectionAdapter<?,?,?,?,?> mAdapter;
 
-    public BaseDragAndDropViewHolder(View itemView, BaseSectionAdapter adapter) {
+    public BaseDragAndDropViewHolder(View itemView, BaseCleverSectionAdapter adapter) {
         super(itemView);
         mAdapter = adapter;
     }
