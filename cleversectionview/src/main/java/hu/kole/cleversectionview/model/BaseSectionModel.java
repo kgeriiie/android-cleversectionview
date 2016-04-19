@@ -1,11 +1,12 @@
 package hu.kole.cleversectionview.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by koleszargergo on 4/7/16.
  */
-public abstract class BaseSectionModel implements Cloneable{
+public abstract class BaseSectionModel implements Cloneable {
 
     protected boolean isHeaderVisible = true;
     protected boolean isFooterVisible = true;
@@ -19,35 +20,46 @@ public abstract class BaseSectionModel implements Cloneable{
     }
 
     public abstract String getId();
-    public abstract String getTitle();
     public abstract <T extends BaseSectionItemModel> List<T> getSectionItems();
+    public abstract <T extends BaseSectionItemModel> void setSectionItems(List<T> sectionItems);
 
     public BaseSectionModel() {
     }
 
-    private BaseSectionModel(BaseSectionModel model) {
-        this.isHeaderVisible = model.isHeaderVisible;
-        this.isFooterVisible = model.isFooterVisible;
+    public boolean equals(BaseSectionModel model) {
+        return getId().equalsIgnoreCase(model.getId());
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return new BaseSectionModel(this) {
-            @Override
-            public String getId() {
-                return this.getId();
+    public Object clone() {
+        try {
+            BaseSectionModel model = (BaseSectionModel) super.clone();
+            model.setSectionItems(new ArrayList<>(model.getSectionItems()));
+            return model;
+        } catch (CloneNotSupportedException e) {
+            throw new InternalError(e.toString());
+        }
+    }
+
+    /**
+     * Get item index in section.
+     * @param <T>   row item.
+     * @return      index of item in this section or -1 if it isn't in this section.
+     */
+    public <T extends BaseSectionItemModel>int getItemIndexInSection(T rowItem) {
+
+        int pos = 0;
+
+        for (BaseSectionItemModel item : getSectionItems()) {
+
+            if (item.equals(rowItem)) {
+                return pos;
             }
 
-            @Override
-            public String getTitle() {
-                return this.getTitle();
-            }
+            pos ++;
+        }
 
-            @Override
-            public <T extends BaseSectionItemModel> List<T> getSectionItems() {
-                return getSectionItems();
-            }
-        };
+        return -1;
     }
 
     /**
@@ -59,7 +71,7 @@ public abstract class BaseSectionModel implements Cloneable{
         List<T> sectionItems = getSectionItems();
 
         if (sectionItems.size() > 0) {
-            return sectionItems.get(0).getViewType() == BaseSectionItemModel.TYPE_SECTION_HEADER;
+            return sectionItems.get(0).getViewType() == BaseSectionItemModel.VIEW_TYPE.TYPE_SECTION_HEADER;
         } else {
             return false;
         }
@@ -76,7 +88,7 @@ public abstract class BaseSectionModel implements Cloneable{
         if (sectionItems.size() > 0) {
             int lastIndex = sectionItems.size() - 1;
 
-            return sectionItems.get(lastIndex).getViewType() == BaseSectionItemModel.TYPE_SECTION_FOOTER;
+            return sectionItems.get(lastIndex).getViewType() == BaseSectionItemModel.VIEW_TYPE.TYPE_SECTION_FOOTER;
         } else {
             return false;
         }

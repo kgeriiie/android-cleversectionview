@@ -4,22 +4,33 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
+import hu.kole.cleversectionview.CleverSectionSpanSizeLookup;
+import hu.kole.cleversectionview.listeners.EndlessScrollListener;
+import hu.kole.cleversectionview.BaseSectionAdapter;
 import hu.kole.clrecyclerview.test.Proposer;
 import hu.kole.clrecyclerview.test.ProposerItem;
+import hu.kole.clrecyclerview.test.ProposerManager;
 import hu.kole.clrecyclerview.test.TestAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String TAG = MainActivity.class.getName();
+
+    GridLayoutManager mLayoutManager;
     RecyclerView listRv;
     TestAdapter adapter;
     List<Proposer> proposers = new ArrayList<>();
+
+    private int[] delay = {1000,1500,2000,3000};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,195 +38,74 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         listRv = (RecyclerView) findViewById(R.id.testRl);
-        LinearLayoutManager llm = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        mLayoutManager = new GridLayoutManager(getApplicationContext(),2,GridLayoutManager.VERTICAL,false);
 
-        proposers.addAll(createHeaderAndFooterLessProposer());
-        proposers.addAll(createHeaderLessProposer());
-        proposers.addAll(createFooterLessProposer());
-        proposers.addAll(createGeneralProposer());
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                schedule();
-            }
-        },1000);
+        proposers.addAll(ProposerManager.getInstance().generateProposers(20));
 
         adapter = new TestAdapter(this,proposers);
 
+        adapter.setOnEndlessScrollListener(new EndlessScrollListener(mLayoutManager,adapter,true) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                loadMore();
+            }
+        });
+
+        mLayoutManager.setSpanSizeLookup(new CleverSectionSpanSizeLookup(adapter,mLayoutManager));
         listRv.setItemAnimator(new DefaultItemAnimator());
-        listRv.setLayoutManager(llm);
+        listRv.setLayoutManager(mLayoutManager);
         listRv.setAdapter(adapter);
-    }
 
-    private void schedule() {
-        Handler h = new Handler();
+        fillProposers(proposers);
 
-//        h.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                proposers.get(0).proposerItems = createGenerailItems0();
-//                adapter.updateDataSet(proposers);
-//            }
-//        },3500);
-
-        h.postDelayed(new Runnable() {
+        adapter.setOnSectionItemClickListener(new BaseSectionAdapter.OnItemClickListener<ProposerItem>() {
             @Override
-            public void run() {
-                proposers.get(1).proposerItems = createGenerailItems1();
-                adapter.updateDataSet(proposers);
+            public void onItemClick(ProposerItem item) {
+                Log.d(TAG,"Clicked on item named: " + item.title);
             }
-        },3000);
 
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                proposers.get(2).proposerItems = createGenerailItems2();
-                adapter.updateDataSet(proposers);
-            }
-        },2000);
-
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                proposers.get(3).proposerItems = createGenerailItems3();
-                adapter.updateDataSet(proposers);
-            }
-        },1000);
-
+        });
     }
 
-    private List<Proposer> createHeaderAndFooterLessProposer() {
-        Proposer p1 = new Proposer();
-        p1.id = "PID_PROP_0";
-        p1.title = "minden nélkül";
-        p1.setHeaderVisibility(false);
-        p1.setFooterVisibility(false);
+    private void fillProposers(final List<Proposer> proposers) {
+        Random random = new Random();
 
-        return Arrays.asList(p1);
+        for (final Proposer proposer : proposers) {
+            int index = random.nextInt(4);
+            final int itemCount = random.nextInt(6) + 1;
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (itemCount < 4) {
+                        proposer.setSectionItems(ProposerManager.getInstance().generateProposerItemsTypeOne(itemCount,proposer.getId()));
+                    } else {
+                        proposer.setSectionItems(ProposerManager.getInstance().generateProposerItemsTypeTwo(itemCount,proposer.getId()));
+                    }
+
+                    adapter.updateDataSet(MainActivity.this.proposers);
+                }
+            },delay[index]);
+        }
     }
 
-    private List<Proposer> createHeaderLessProposer() {
-        Proposer p1 = new Proposer();
-        p1.id = "PID_PROP_1";
-        p1.title = "Ez csak egyedül egy footer";
-        p1.setHeaderVisibility(false);
+    private void loadMore() {
 
-        return Arrays.asList(p1);
+        if (proposers.size() < 30) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    List<Proposer> prop = ProposerManager.getInstance().generateProposers(5);
+                    proposers.addAll(prop);
+                    adapter.updateDataSet(proposers);
+
+                    fillProposers(prop);
+                }
+            },1500);
+
+            return;
+        }
+
+        adapter.updateDataSet(proposers);
     }
-
-    private List<Proposer> createFooterLessProposer() {
-        Proposer p1 = new Proposer();
-        p1.id = "PID_PROP_2";
-        p1.setFooterVisibility(false);
-        p1.title = "Ez egy header egyedül";
-
-        return Arrays.asList(p1);
-    }
-
-    private List<Proposer> createGeneralProposer() {
-        Proposer p1 = new Proposer();
-        p1.id = "PID_PROP_3";
-        p1.title = "Header és Footer is együtt";
-
-        return Arrays.asList(p1);
-    }
-
-    private List<ProposerItem> createGenerailItems0() {
-        List<ProposerItem> items = new ArrayList<>();
-
-        ProposerItem p1 = new ProposerItem();
-        p1.id = "PID_ITEM_01";
-        p1.title = "Banner 1";
-        items.add(p1);
-
-        ProposerItem p2 = new ProposerItem();
-        p2.id = "PID_ITEM_02";
-        p2.title = "Banner 2";
-        items.add(p2);
-
-        return items;
-    }
-
-    private List<ProposerItem> createGenerailItems1() {
-        List<ProposerItem> items = new ArrayList<>();
-
-        ProposerItem p1 = new ProposerItem();
-        p1.id = "PID_ITEM_11";
-        p1.title = "Egyes Elem 1";
-        items.add(p1);
-
-        ProposerItem p2 = new ProposerItem();
-        p2.id = "PID_ITEM_12";
-        p2.title = "Egyes Elem 2";
-        items.add(p2);
-
-        ProposerItem p3 = new ProposerItem();
-        p3.id = "PID_ITEM_13";
-        p3.title = "Egyes Elem 3";
-        items.add(p3);
-
-        ProposerItem p4 = new ProposerItem();
-        p4.id = "PID_ITEM_14";
-        p4.title = "Egyes Elem 4";
-        items.add(p4);
-
-        return items;
-    }
-
-    private List<ProposerItem> createGenerailItems2() {
-        List<ProposerItem> items = new ArrayList<>();
-
-        ProposerItem p1 = new ProposerItem();
-        p1.id = "PID_ITEM_21";
-        p1.title = "Kettes Elem 1";
-        items.add(p1);
-
-        ProposerItem p2 = new ProposerItem();
-        p2.id = "PID_ITEM_22";
-        p2.title = "Kettes Elem 2";
-        p2.layoutType = ProposerItem.LAYOUT_TYPE.GREEN_LAYOUT;
-        items.add(p2);
-
-        ProposerItem p3 = new ProposerItem();
-        p3.id = "PID_ITEM_23";
-        p3.title = "Kettes Elem 3";
-        items.add(p3);
-
-        ProposerItem p4 = new ProposerItem();
-        p4.id = "PID_ITEM_24";
-        p4.title = "Kettes Elem 4";
-        p4.layoutType = ProposerItem.LAYOUT_TYPE.GREEN_LAYOUT;
-        items.add(p4);
-
-        return items;
-    }
-
-    private List<ProposerItem> createGenerailItems3() {
-        List<ProposerItem> items = new ArrayList<>();
-
-        ProposerItem p1 = new ProposerItem();
-        p1.id = "PID_ITEM_31";
-        p1.title = "Harmas Elem 1";
-        items.add(p1);
-
-        ProposerItem p2 = new ProposerItem();
-        p2.id = "PID_ITEM_32";
-        p2.title = "Harmas Elem 2";
-        p2.layoutType = ProposerItem.LAYOUT_TYPE.GREEN_LAYOUT;
-        items.add(p2);
-
-        ProposerItem p3 = new ProposerItem();
-        p3.id = "PID_ITEM_33";
-        p3.title = "Harmas Elem 3";
-        items.add(p3);
-
-        ProposerItem p4 = new ProposerItem();
-        p4.id = "PID_ITEM_34";
-        p4.title = "Harmas Elem 4";
-        items.add(p4);
-
-        return items;
-    }
-
 }

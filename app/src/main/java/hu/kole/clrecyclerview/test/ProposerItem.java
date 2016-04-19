@@ -8,13 +8,13 @@ import hu.kole.cleversectionview.model.BaseSectionItemModel;
 public class ProposerItem extends BaseSectionItemModel {
 
     public static class LAYOUT_TYPE {
-        public static final int GREEN_LAYOUT = 0;
-        public static final int RED_LAYOUT = 1;
+        public static final int CARD_LAYOUT = 0;
+        public static final int COVER_LAYOUT = 1;
     }
 
     public String id;
     public String title;
-    public int layoutType = LAYOUT_TYPE.RED_LAYOUT;
+    public int layoutType = LAYOUT_TYPE.CARD_LAYOUT;
 
     @Override
     public String getId() {
@@ -24,5 +24,14 @@ public class ProposerItem extends BaseSectionItemModel {
     @Override
     public int getLayoutType() {
         return layoutType;
+    }
+
+    @Override
+    public int getSpanType() {
+        if (getLayoutType() == LAYOUT_TYPE.CARD_LAYOUT) {
+            return SPAN_TYPE.LINEAR_TYPE;
+        } else {
+            return SPAN_TYPE.GRID_TYPE;
+        }
     }
 }

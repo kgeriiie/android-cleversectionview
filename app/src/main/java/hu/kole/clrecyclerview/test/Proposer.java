@@ -22,13 +22,13 @@ public class Proposer extends BaseSectionModel {
     }
 
     @Override
-    public String getTitle() {
-        return title;
+    public <T extends BaseSectionItemModel> List<T> getSectionItems() {
+        return (List<T>) proposerItems;
     }
 
     @Override
-    public <T extends BaseSectionItemModel> List<T> getSectionItems() {
-        return (List<T>) proposerItems;
+    public <T extends BaseSectionItemModel> void setSectionItems(List<T> sectionItems) {
+        proposerItems = (List<ProposerItem>) sectionItems;
     }
 
     public void setFooterVisibility(boolean isVisible) {
