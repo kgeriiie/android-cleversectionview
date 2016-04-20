@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     TestAdapter adapter;
     List<Proposer> proposers = new ArrayList<>();
 
+    //For simulate data downloading delay.
     private int[] delay = {1000,1500,2000,3000};
 
     @Override
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         proposers.addAll(ProposerManager.getInstance().generateProposers(20));
 
         adapter = new TestAdapter(this,proposers);
+        adapter.setDragAndDropEnabled(false);
 
         adapter.setOnEndlessScrollListener(new EndlessScrollListener(mLayoutManager,adapter,true) {
             @Override

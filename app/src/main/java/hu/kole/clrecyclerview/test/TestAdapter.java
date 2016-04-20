@@ -84,11 +84,13 @@ public class TestAdapter extends BaseCleverSectionAdapter<Proposer,ProposerItem,
     }
 
     @Override
-    public boolean isDraggingEnabledAtItemPosition(Proposer section, ProposerItem proposerItem) {
-        if (proposerItem.getSpanType() == BaseSectionItemModel.SPAN_TYPE.GRID_TYPE && section.getItemIndexInSection(proposerItem) == 0) {
+    public boolean isDraggingEnabledAtItemPosition(Proposer section,ProposerItem fromItem, ProposerItem toItem) {
+
+        if ((fromItem.getSpanType() == BaseSectionItemModel.SPAN_TYPE.GRID_TYPE && section.getItemIndexInSection(fromItem) == 0) ||
+                (toItem.getSpanType() == BaseSectionItemModel.SPAN_TYPE.GRID_TYPE && section.getItemIndexInSection(toItem) == 0)) {
             return false;
         }
 
-        return super.isDraggingEnabledAtItemPosition(section, proposerItem);
+        return super.isDraggingEnabledAtItemPosition(section,fromItem, toItem);
     }
 }

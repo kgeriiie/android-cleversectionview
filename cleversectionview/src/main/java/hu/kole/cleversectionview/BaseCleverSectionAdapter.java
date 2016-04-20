@@ -38,6 +38,7 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
 
     private boolean isEndlessScrollListenerAdded = false;
     private boolean isLoadMoreProgressVisible = false;
+    private boolean isDragAndDropEnabled = true;
 
     private final int SCROLL_AMOUNT = (int) (2 * Resources.getSystem().getDisplayMetrics().density);
 
@@ -61,8 +62,9 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
     }
 
     /**
-     *  Create a one dimension array from this.sections two dimensional array. BaseCleverSectionAdapter will
-     * @return
+     *  Create a one dimension array from this.sections two dimensional array. BaseCleverSectionAdapter will use them to display row items in a simple recycler view.
+     *
+     * @return One dimensional array of sections.
      */
     protected final List<TSectionItem> copySectionsIntoRealObjects() {
         List<TSection> temp = cloneSectionList(this.sections);
@@ -110,6 +112,9 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
         this.notifyDataSetChanged();
     }
 
+    /**
+     * Add a loader item to the end of list, if it is not added.
+     */
     public final void addShowMoreProgress() {
         if (!isLoadMoreProgressVisible && this.sections.size() > 0) {
             TSection lastSection = this.sections.get(this.sections.size() -1);
@@ -131,6 +136,9 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
         }
     }
 
+    /**
+     * Remove loader item from end of list, if it is added.
+     */
     private final void removeShowMoreProgress() {
         if (isLoadMoreProgressVisible && this.sections.size() > 0) {
             TSection lastSection = this.sections.get(this.sections.size() -1);
@@ -173,6 +181,11 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
         return temp;
     }
 
+    /**
+     * Set up drag and drop on recycler view.
+     *
+     * @param recyclerView  Connected recycler view.
+     */
     private void initDragAndDrop(RecyclerView recyclerView) {
         mConnectedRecyclerView = recyclerView;
 
@@ -286,7 +299,7 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
 
             holder.itemView.setOnClickListener(handleOnItemClick());
 
-            if (isDraggingEnabledAtItemPosition(section, item)) {
+            if (isDragAndDropEnabled && isDraggingEnabledAtItemPosition(section,item,item)) {
                 holder.itemView.setOnLongClickListener((TItemViewHolder) holder);
                 holder.itemView.setVisibility(getDraggingId() == item.getId().hashCode() ? View.INVISIBLE : View.VISIBLE);
                 holder.itemView.postInvalidate();
@@ -294,6 +307,12 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
         }
     }
 
+    /**
+     * Convert layout type.
+     *
+     * @param rawViewType - raw viewType. (sum of viewType, layoutType and correction value 1)
+     * @return base type of view or layout type of view if type has remainder value.
+     */
     private final int convertToLayoutType(int rawViewType) {
         int type  = (rawViewType - CORRECTION);
 
@@ -305,7 +324,6 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
     }
 
     //ViewHolder section.
-
     public abstract THeaderViewHolder onCreateHeaderViewHolder(ViewGroup parent, int layoutType);
     public abstract TItemViewHolder onCreateItemViewHolder(ViewGroup parent, int layoutType);
     public abstract TFooterViewHolder onCreateFooterViewHolder(ViewGroup parent, int layoutType);
@@ -335,10 +353,18 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
         this.mEndlessScrollListener.setEndlessScrollEnabled(isEnabled);
     }
 
+    public final void setDragAndDropEnabled(boolean isEnabled) {
+        this.isDragAndDropEnabled = isEnabled;
+    }
+
     public final void hideLoadMoreProgress() {
         removeShowMoreProgress();
     }
 
+    /**
+     * Add endlessScrollListener to recycler view after more than value of FILLED_SECTION_IN_PERCENT section filled.
+     *
+     */
     private final void addEndlessScrollListener() {
         if (!isEndlessScrollListenerAdded && this.mEndlessScrollListener != null) {
             int countOfFilledSection = 0;
@@ -372,7 +398,14 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
         void onItemClick(TModelItem item);
     }
 
-    public boolean isDraggingEnabledAtItemPosition(TSection section, TSectionItem item) {
+    /**
+     * Enable or disable dragging options on items or sections.
+     * @param section
+     * @param fromItem
+     * @param toItem
+     * @return
+     */
+    public boolean isDraggingEnabledAtItemPosition(TSection section,TSectionItem fromItem, TSectionItem toItem) {
         return true;
     }
 
@@ -411,9 +444,9 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
         TSection toSection = getSectionOfItem(itemAtToPosition);
 
         if (fromSection.equals(toSection)
-                && isDraggingEnabledAtItemPosition(toSection,itemAtToPosition)
                 && itemAtFromPosition.getViewType() == BaseSectionItemModel.VIEW_TYPE.TYPE_ITEM
-                && itemAtToPosition.getViewType() == BaseSectionItemModel.VIEW_TYPE.TYPE_ITEM) {
+                && itemAtToPosition.getViewType() == BaseSectionItemModel.VIEW_TYPE.TYPE_ITEM
+                && isDraggingEnabledAtItemPosition(toSection,itemAtFromPosition,itemAtToPosition)) {
 
             //We need modify item order in both list.
             toSection.getSectionItems().add(toSection.getItemIndexInSection(itemAtToPosition),toSection.getSectionItems().remove(toSection.getItemIndexInSection(itemAtFromPosition)));
