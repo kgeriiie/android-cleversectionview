@@ -1,9 +1,9 @@
 Clever Section Recycler View
 =============================
 
-Hey! It's a custom recycler view library, witch can display your data in sections (with Header and Footer). Okey, you can say that it's an average recycler view, but what makes it clever, see it below.:
+Hey! It's a custom recycler view library, which can display your data in sections (with Header and Footer). Ok, you can say that it's an average recycler view, but what makes it clever, see it below.:
 
-- User can use different view type in each section, so you can use a linear layout type witch span the whole screen in first section and display a grid layout type in the second section.
+- User can use different view type in each section, so you can use a linear layout type which span the whole screen in first section and display a grid layout type in the second section.
 
 - Supports multiple view type in every view type (*header,item,footer*).
 
@@ -19,7 +19,7 @@ Hey! It's a custom recycler view library, witch can display your data in section
 Usage
 ----------
 
-CSRV provides base classes for sections and section items. You should inherite from this classes.
+CSRV provides base classes for sections and section items. You should inherit from this classes.
 
 >**Note:** use unique **id** in *getId()* methods, because it will be used for identify row items in recycler view adapters. Not unique ids can cause bad working of CSRV.
 
