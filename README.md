@@ -11,9 +11,8 @@ Hey! It's a custom recycler view library, witch can display your data in section
 
 - You can use drag&drop function within sections.
 
-```
+
 ![alt tag](https://github.com/kgeriiie/cleversectionview/blob/master/images/clever_section_recyclerview_320.gif)
-```
 
 ----------
 
