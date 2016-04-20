@@ -113,6 +113,10 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
         this.notifyDataSetChanged();
     }
 
+    public List<TSection> getDataSet() {
+        return this.sections;
+    }
+
     /**
      * Add a loader item to the end of list, if it is not added.
      */
