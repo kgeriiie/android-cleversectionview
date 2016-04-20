@@ -11,7 +11,9 @@ Hey! It's a custom recycler view library, witch can display your data in section
 
 - You can use drag&drop function within sections.
 
-![alt tag](https://github.com/kgeriiie/cleversectionview/blob/master/images/clever_section_recyclerview.gif =250x100)
+```
+![alt tag](https://github.com/kgeriiie/cleversectionview/blob/master/images/clever_section_recyclerview_320.gif)
+```
 
 ----------
 
@@ -139,3 +141,20 @@ We can limit the drag and drop function on items, if we need. In this case we ca
 ```
 
 If we have never need this function, we can disable it, just call **setDragAndDropEnabled()** method on adapter.
+
+License
+-------
+
+    Copyright 2016 geriiie
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
