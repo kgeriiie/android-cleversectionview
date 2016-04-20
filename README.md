@@ -12,18 +12,18 @@ Hey! It's a custom recycler view library, witch can display your data in section
 - You can use drag&drop function within sections.
 
 
-![alt tag](https://github.com/kgeriiie/cleversectionview/blob/master/images/clever_section_recyclerview_320.gif)
+![alt tag](https://github.com/kgeriiie/cleversectionview/blob/master/images/clever_section_recyclerview.gif)
 
 ----------
 
-Useage
+Usage
 ----------
 
 CSRV provides base classes for sections and section items. You should inherite from this classes.
 
 >**Note:** use unique **id** in *getId()* methods, because it will be used for identify row items in recycler view adapters. Not unique ids can cause bad working of CSRV.
 
-***Inherite from BaseSectionModel***
+***Inherit from BaseSectionModel***
 ```java
 public class Section extends BaseSectionModel {
 
@@ -45,7 +45,7 @@ public class Section extends BaseSectionModel {
 }
 ```
 
-***Inherite from BaseSectionItemModel***
+***Inherit from BaseSectionItemModel***
 ```java
 public class SectionItem extends
 BaseSectionItemModel {
@@ -62,7 +62,7 @@ BaseSectionItemModel {
 
 }
 ```
-***Inherite from BaseCleverSectionAdapter***
+***Inherit from BaseCleverSectionAdapter***
 ```java
 public class SectionAdapter extends
 BaseCleverSectionAdapter<Section,SectionItem,BaseDragAndDropViewHolder,ProposerHeaderViewHolder,ProposerFooterViewHolder> {
@@ -141,10 +141,32 @@ We can limit the drag and drop function on items, if we need. In this case we ca
 
 If we have never need this function, we can disable it, just call **setDragAndDropEnabled()** method on adapter.
 
+####Endless scroll
+
+We have to call setOnEndlessScrollListener() method on adapter. We can turn in/out progress bar at the end of list (Set last param false in EndlessScrollListener() constructor).
+
+```java
+   adapter.setOnEndlessScrollListener(new EndlessScrollListener(mLayoutManager,adapter,true) {
+        @Override
+        public void onLoadMore(int page, int totalItemsCount) {
+            //Call load more method or something like that...
+        }
+   });
+```
+
+You can customize progress bar's view if you override it's onCreateLoaderViewHolder() and onBindLoaderViewHolder() methods.
+
+
+Used frameworks
+---------------
+- DragSortAdapter: https://github.com/vinc3m1/DragSortAdapter
+- MaterialLoadingProgressBar: https://github.com/lsjwzh/MaterialLoadingProgressBar
+
+
 License
 -------
 
-    Copyright 2016 geriiie
+    Copyright 2016 kgeriiie
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
