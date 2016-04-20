@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="materialloadingprogressbar-0.5.8-RELEASE">
     <ANNOTATIONS>
-      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.lsjwzh/materialloadingprogressbar/0.5.8-RELEASE/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/cleversectionviewadapter/build/intermediates/exploded-aar/com.lsjwzh/materialloadingprogressbar/0.5.8-RELEASE/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.lsjwzh/materialloadingprogressbar/0.5.8-RELEASE/res" />
-      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.lsjwzh/materialloadingprogressbar/0.5.8-RELEASE/jars/classes.jar!/" />
+      <root url="jar://$PROJECT_DIR$/cleversectionviewadapter/build/intermediates/exploded-aar/com.lsjwzh/materialloadingprogressbar/0.5.8-RELEASE/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/cleversectionviewadapter/build/intermediates/exploded-aar/com.lsjwzh/materialloadingprogressbar/0.5.8-RELEASE/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

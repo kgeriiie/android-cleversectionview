@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ClRecyclerView.iml" filepath="$PROJECT_DIR$/ClRecyclerView.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/cleversectionview/cleversectionview.iml" filepath="$PROJECT_DIR$/cleversectionview/cleversectionview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cleversectionviewadapter/cleversectionview.iml" filepath="$PROJECT_DIR$/cleversectionviewadapter/cleversectionview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo/app.iml" filepath="$PROJECT_DIR$/demo/app.iml" />
     </modules>
   </component>
 </project>

@@ -1,7 +1,7 @@
-Clever Section Recycler View
-=============================
+Clever Section Recycler View Adapter
+====================================
 
-Hey! It's a custom recycler view library, which can display your data in sections (with Header and Footer). Ok, you can say that it's an average recycler view, but what makes it clever, see it below.:
+Hey! It's a custom recycler view adapter library, which can display your data in sections (with Header and Footer). Ok, you can say that it's an average recycler view, but what makes it clever, see it below.:
 
 - User can use different view type in each section, so you can use a linear layout type which span the whole screen in first section and display a grid layout type in the second section.
 
@@ -15,13 +15,27 @@ Hey! It's a custom recycler view library, which can display your data in section
 ![alt tag](https://github.com/kgeriiie/cleversectionview/blob/master/images/clever_section_recyclerview.gif)
 
 ----------
+Install
+----------
+
+```gradle
+repositories {
+    maven {
+        url  "http://dl.bintray.com/geriiie/maven"
+    }
+}
+```
+
+```gradle
+compile 'hu.kole.csrva:cleversectionviewadapter:1.0.0'
+```
 
 Usage
 ----------
 
-CSRV provides base classes for sections and section items. You should inherit from this classes.
+CSRVA provides base classes for sections and section items. You should inherit from this classes.
 
->**Note:** use unique **id** in *getId()* methods, because it will be used for identify row items in recycler view adapters. Not unique ids can cause bad working of CSRV.
+>**Note:** use unique **id** in *getId()* methods, because it will be used for identify row items in recycler view adapters. Not unique ids can cause bad working of CSRVA.
 
 ***Inherit from BaseSectionModel***
 ```java
