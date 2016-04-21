@@ -27,7 +27,7 @@ repositories {
 ```
 
 ```gradle
-compile 'hu.kole.csrva:cleversectionviewadapter:1.0.0'
+compile 'hu.kole.csrva:cleversectionviewadapter:1.0.2'
 ```
 
 Usage

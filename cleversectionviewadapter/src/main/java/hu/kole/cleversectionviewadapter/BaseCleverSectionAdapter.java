@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import hu.kole.cleversectionviewadapter.R;
 import hu.kole.cleversectionviewadapter.draganddrop.DragInfo;
 import hu.kole.cleversectionviewadapter.draganddrop.DragManager;
 import hu.kole.cleversectionviewadapter.listeners.EndlessScrollListener;
@@ -164,6 +163,42 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
 
     public TSectionItem getItemAtPosition(int position) {
         return this.allRowItems.get(position);
+    }
+
+    public synchronized void removeItem(TSectionItem content) {
+        int index = -1;
+        int section = -1;
+        int j = 0;
+        for (TSection proposer : getDataSet()) {
+            for (int i = 0; i < proposer.getSectionItems().size(); i++) {
+                if (content.equals(proposer.getSectionItems().get(i))) {
+                    index = i;
+                    section = j;
+                }
+            }
+            j++;
+        }
+
+        if (section > -1 && index > -1)
+            this.getDataSet().get(section).getSectionItems().remove(index);
+
+        this.allRowItems.clear();
+        this.allRowItems.addAll(copySectionsIntoRealObjects());
+
+        this.notifyDataSetChanged();
+    }
+
+    public synchronized void addItemsToSection(String sectionId, List<TSectionItem> items) {
+        for (TSection section : sections) {
+            if (section.getId().equalsIgnoreCase(sectionId)) {
+                section.setSectionItems(items);
+            }
+        }
+
+        this.allRowItems.clear();
+        this.allRowItems.addAll(copySectionsIntoRealObjects());
+
+        this.notifyDataSetChanged();
     }
 
     public final TSection getSectionOfItem(TSectionItem item) {
@@ -346,6 +381,10 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
         //Not used yet.
     }
 
+    public RecyclerView getConnectedRecyclerView() {
+        return this.mConnectedRecyclerView;
+    }
+
     public final void setOnSectionItemClickListener(OnItemClickListener listener) {
         this.mOnSectionItemClickListener = listener;
     }
@@ -393,14 +432,14 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
             public void onClick(View v) {
                 if (mOnSectionItemClickListener != null) {
                     int absolutePos = mConnectedRecyclerView.getChildViewHolder(v).getAdapterPosition();
-                    mOnSectionItemClickListener.onItemClick(allRowItems.get(absolutePos));
+                    mOnSectionItemClickListener.onItemClick(v, allRowItems.get(absolutePos));
                 }
             }
         };
     }
 
     public interface OnItemClickListener<TModelItem extends BaseSectionItemModel> {
-        void onItemClick(TModelItem item);
+        void onItemClick(View view, TModelItem item);
     }
 
     /**
