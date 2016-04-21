@@ -7,6 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.setOnSectionItemClickListener(new BaseCleverSectionAdapter.OnItemClickListener<ProposerItem>() {
             @Override
-            public void onItemClick(ProposerItem item) {
+            public void onItemClick(View view, ProposerItem item) {
                 Log.d(TAG,"Clicked on item named: " + item.title);
             }
 
