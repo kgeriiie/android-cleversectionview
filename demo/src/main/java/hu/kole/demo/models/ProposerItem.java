@@ -9,7 +9,9 @@ public class ProposerItem extends BaseSectionItemModel {
 
     public static class LAYOUT_TYPE {
         public static final int CARD_LAYOUT = 0;
-        public static final int COVER_LAYOUT = 1;
+        public static final int CARD_LAYOUT_GREEN = 1;
+        public static final int CARD_LAYOUT_RED = 2;
+        public static final int COVER_LAYOUT = 3;
     }
 
     public String id;
@@ -28,7 +30,7 @@ public class ProposerItem extends BaseSectionItemModel {
 
     @Override
     public int getSpanType() {
-        if (getLayoutType() == LAYOUT_TYPE.CARD_LAYOUT) {
+        if (getLayoutType() == LAYOUT_TYPE.CARD_LAYOUT || getLayoutType() == LAYOUT_TYPE.CARD_LAYOUT_GREEN || getLayoutType() == LAYOUT_TYPE.CARD_LAYOUT_RED) {
             return SPAN_TYPE.LINEAR_TYPE;
         } else {
             return SPAN_TYPE.GRID_TYPE;

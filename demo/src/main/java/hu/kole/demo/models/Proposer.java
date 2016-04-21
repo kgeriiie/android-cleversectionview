@@ -38,4 +38,9 @@ public class Proposer extends BaseSectionModel {
     public void setHeaderVisibility(boolean isVisible) {
         this.isHeaderVisible = isVisible;
     }
+
+    @Override
+    public int getSectionItemCount() {
+        return getSectionItems().size();
+    }
 }

@@ -69,6 +69,22 @@ public class ProposerManager {
         return proposerItems;
     }
 
+    public List<ProposerItem> generateProposerItemsMixed(int size, String proposerParentId) {
+        List<ProposerItem> proposerItems = new ArrayList<>();
+
+        for (int i = 0;i < size; i++) {
+            int index = proposerItemId + i;
+            ProposerItem proposerItem = createProposerItem(index,"ITEM_" + index);
+            proposerItem.setParentId(proposerParentId);
+            proposerItem.layoutType = i % 2 == 0 ? ProposerItem.LAYOUT_TYPE.CARD_LAYOUT_GREEN : ProposerItem.LAYOUT_TYPE.CARD_LAYOUT_RED;
+            proposerItems.add(proposerItem);
+        }
+
+        proposerItemId += size;
+
+        return proposerItems;
+    }
+
     public List<ProposerItem> generateProposerItemsTypeTwo(int size, String proposerParentId) {
         List<ProposerItem> proposerItems = new ArrayList<>();
 

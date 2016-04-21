@@ -71,7 +71,8 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
         List<TSectionItem> sectionItems = new ArrayList<>();
 
         for (TSection section : temp) {
-            List<TSectionItem> sectionItemModels = section.getSectionItems();
+
+            List<TSectionItem> sectionItemModels = section.getSectionItems().size() > 0 ? section.<TSectionItem>getSectionItems().subList(0,section.getSectionItemCount()) : section.<TSectionItem>getSectionItems();
 
             if (sectionItemModels != null) {
                 if (section.isHeaderVisible() && !section.isHeaderItemAtFirstPosition()) {
@@ -356,7 +357,7 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
     private final int convertToLayoutType(int rawViewType) {
         int type  = (rawViewType - CORRECTION);
 
-        if (type % TSectionItem.TYPE_MASK == 0) {
+        if (type < 0) {
             return type;
         } else {
             return type % TSectionItem.TYPE_MASK;

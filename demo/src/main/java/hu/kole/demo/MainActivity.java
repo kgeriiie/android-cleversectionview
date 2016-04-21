@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         listRv = (RecyclerView) findViewById(R.id.testRl);
         mLayoutManager = new GridLayoutManager(getApplicationContext(),2,GridLayoutManager.VERTICAL,false);
 
-        proposers.addAll(ProposerManager.getInstance().generateProposers(20));
+        proposers.addAll(ProposerManager.getInstance().generateProposers(3));
 
         adapter = new ProposerAdapter(this,proposers);
         adapter.setDragAndDropEnabled(false);
@@ -73,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
         Random random = new Random();
 
         for (final Proposer proposer : proposers) {
+
+//            proposer.setSectionItems(ProposerManager.getInstance().generateProposerItemsMixed(6,proposer.getId()));
+//            adapter.updateDataSet(MainActivity.this.proposers);
+
             int index = random.nextInt(4);
             final int itemCount = random.nextInt(6) + 1;
 

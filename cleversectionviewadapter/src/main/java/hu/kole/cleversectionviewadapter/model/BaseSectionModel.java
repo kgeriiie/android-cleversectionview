@@ -26,6 +26,10 @@ public abstract class BaseSectionModel implements Cloneable {
     public BaseSectionModel() {
     }
 
+    public int getSectionItemCount() {
+        return getSectionItems().size();
+    }
+
     public boolean equals(BaseSectionModel model) {
         return getId().equalsIgnoreCase(model.getId());
     }

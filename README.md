@@ -18,16 +18,10 @@ Hey! It's a custom recycler view adapter library, which can display your data in
 Install
 ----------
 
-```gradle
-repositories {
-    maven {
-        url  "http://dl.bintray.com/geriiie/maven"
-    }
-}
-```
+Gradle:
 
 ```gradle
-compile 'hu.kole.csrva:cleversectionviewadapter:1.0.2'
+compile 'hu.kole.csrva:cleversectionviewadapter:1.0.3'
 ```
 
 Usage

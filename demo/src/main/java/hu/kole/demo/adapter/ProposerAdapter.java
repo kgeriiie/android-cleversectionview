@@ -1,6 +1,7 @@
 package hu.kole.demo.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,14 @@ public class ProposerAdapter extends BaseCleverSectionAdapter<Proposer,ProposerI
         if (layoutType == ProposerItem.LAYOUT_TYPE.COVER_LAYOUT) {
             ProposerCoverViewHolder cHolder = (ProposerCoverViewHolder) holder;
             cHolder.titleTv.setText(item.title);
+        } else if (layoutType == ProposerItem.LAYOUT_TYPE.CARD_LAYOUT_GREEN) {
+            ProposerItemViewHolder cHolder = (ProposerItemViewHolder) holder;
+            cHolder.titleTv.setText(item.title);
+            cHolder.titleTv.setBackgroundColor(ContextCompat.getColor(mContext,android.R.color.holo_green_dark));
+        } else if (layoutType == ProposerItem.LAYOUT_TYPE.CARD_LAYOUT_RED) {
+            ProposerItemViewHolder cHolder = (ProposerItemViewHolder) holder;
+            cHolder.titleTv.setText(item.title);
+            cHolder.titleTv.setBackgroundColor(ContextCompat.getColor(mContext,android.R.color.holo_red_dark));
         } else {
             ProposerItemViewHolder cHolder = (ProposerItemViewHolder) holder;
             cHolder.titleTv.setText(item.title);
