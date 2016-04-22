@@ -102,13 +102,18 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
 
         isLoadMoreProgressVisible = false;
 
-        sections.clear();
-        allRowItems.clear();
+        this.sections.clear();
 
         this.sections.addAll(data);
-        this.allRowItems.addAll(copySectionsIntoRealObjects());
+        this.updateDataSetAfterChanged();
 
         addEndlessScrollListener();
+    }
+
+    public void updateDataSetAfterChanged() {
+
+        this.allRowItems.clear();
+        this.allRowItems.addAll(copySectionsIntoRealObjects());
 
         this.notifyDataSetChanged();
     }
@@ -131,10 +136,7 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
 
                 this.sections.add(loader);
 
-                this.allRowItems.clear();
-                this.allRowItems.addAll(copySectionsIntoRealObjects());
-
-                this.notifyDataSetChanged();
+                this.updateDataSetAfterChanged();
 
                 isLoadMoreProgressVisible = true;
             }
@@ -152,10 +154,7 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
 
                 this.sections.remove(this.sections.size() - 1);
 
-                this.allRowItems.clear();
-                this.allRowItems.addAll(copySectionsIntoRealObjects());
-
-                this.notifyDataSetChanged();
+                this.updateDataSetAfterChanged();
 
                 isLoadMoreProgressVisible = false;
             }
@@ -183,10 +182,7 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
         if (section > -1 && index > -1)
             this.getDataSet().get(section).getSectionItems().remove(index);
 
-        this.allRowItems.clear();
-        this.allRowItems.addAll(copySectionsIntoRealObjects());
-
-        this.notifyDataSetChanged();
+        this.updateDataSetAfterChanged();
     }
 
     public synchronized void addItemsToSection(String sectionId, List<TSectionItem> items) {
@@ -196,10 +192,7 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
             }
         }
 
-        this.allRowItems.clear();
-        this.allRowItems.addAll(copySectionsIntoRealObjects());
-
-        this.notifyDataSetChanged();
+        this.updateDataSetAfterChanged();
     }
 
     public final TSection getSectionOfItem(TSectionItem item) {
