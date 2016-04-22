@@ -22,7 +22,7 @@ public class CleverSectionSpanSizeLookup extends GridLayoutManager.SpanSizeLooku
         if (this.mAdapter.getItemAtPosition(position).getSpanType() == BaseSectionItemModel.SPAN_TYPE.GRID_TYPE) {
             return 1;
         } else {
-            return mLayoutManager.getSpanCount();
+            return this.mAdapter.getItemAtPosition(position).getSpanCount() > 0 ? this.mAdapter.getItemAtPosition(position).getSpanCount() : mLayoutManager.getSpanCount();
         }
     }
 }

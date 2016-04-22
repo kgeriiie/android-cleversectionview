@@ -61,12 +61,23 @@ public abstract class BaseSectionItemModel implements Cloneable {
     /**
      * Get span type of row item in base adapter. (It could be GRID OR LINEAR).
      *
-     * User can customize, witch will be choose.
+     * User can customize, which will be choose.
      *
      * @return base view type.
      */
     public int getSpanType() {
         return SPAN_TYPE.LINEAR_TYPE;
+    }
+
+    /**
+     * Get span count of row item in base adapter.
+     *
+     * User can customize, which will be choose.
+     *
+     * @return 0 if you want to span on whole screen.
+     */
+    public int getSpanCount() {
+        return 0;
     }
 
     /**
