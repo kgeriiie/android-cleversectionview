@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     List<Proposer> proposers = new ArrayList<>();
 
     //For simulate data downloading delay.
-    private int[] delay = {1000,1500,2000,3000};
+    private int[] delay = {1000,1010,1020,1040};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,17 +41,18 @@ public class MainActivity extends AppCompatActivity {
         listRv = (RecyclerView) findViewById(R.id.testRl);
         mLayoutManager = new GridLayoutManager(getApplicationContext(),2,GridLayoutManager.VERTICAL,false);
 
+        proposers.add(ProposerManager.getInstance().generateProposerBanner());
         proposers.addAll(ProposerManager.getInstance().generateProposers(3));
 
         adapter = new ProposerAdapter(this,proposers);
         adapter.setDragAndDropEnabled(false);
 
-        adapter.setOnEndlessScrollListener(new EndlessScrollListener(mLayoutManager,adapter,true) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                loadMore();
-            }
-        });
+//        adapter.setOnEndlessScrollListener(new EndlessScrollListener(mLayoutManager,adapter,true) {
+//            @Override
+//            public void onLoadMore(int page, int totalItemsCount) {
+//                loadMore();
+//            }
+//        });
 
         mLayoutManager.setSpanSizeLookup(new CleverSectionSpanSizeLookup(adapter,mLayoutManager));
         listRv.setItemAnimator(new DefaultItemAnimator());
@@ -69,30 +70,42 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private int in,i;
     private void fillProposers(final List<Proposer> proposers) {
         Random random = new Random();
+
+        in = 0;
+        i  = 0;
 
         for (final Proposer proposer : proposers) {
 
 //            proposer.setSectionItems(ProposerManager.getInstance().generateProposerItemsMixed(6,proposer.getId()));
 //            adapter.updateDataSet(MainActivity.this.proposers);
 
-            int index = random.nextInt(4);
+            final int index = random.nextInt(4);
             final int itemCount = random.nextInt(6) + 1;
 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (itemCount < 4) {
-                        proposer.setSectionItems(ProposerManager.getInstance().generateProposerItemsTypeOne(itemCount,proposer.getId()));
-                    } else {
+                    if (proposer.title.contains("BANN") && in < 1) {
+                        proposer.setSectionItems(ProposerManager.getInstance().generateBanner(proposer.getId()));
+
+                        in ++;
+                    }  else {
                         proposer.setSectionItems(ProposerManager.getInstance().generateProposerItemsTypeTwo(itemCount,proposer.getId()));
                     }
 
                     adapter.updateDataSet(MainActivity.this.proposers);
                 }
-            },delay[index]);
+            },delay[i]);
+
+            i ++;
         }
+    }
+
+    private void fill() {
+
     }
 
     private void loadMore() {

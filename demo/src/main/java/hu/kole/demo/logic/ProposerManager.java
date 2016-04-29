@@ -41,6 +41,12 @@ public class ProposerManager {
         }
     }
 
+    public Proposer generateProposerBanner() {
+        Proposer p = createProposer(proposerItemId, "BANNER_BANNER", false, false);
+        proposerItemId ++;
+        return p;
+    }
+
     public List<Proposer> generateProposers(int size) {
         List<Proposer> proposers = new ArrayList<>();
 
@@ -52,6 +58,19 @@ public class ProposerManager {
         proposerId += size;
 
         return proposers;
+    }
+
+    public List<ProposerItem> generateBanner(String proposerParentId) {
+        List<ProposerItem> proposerItems = new ArrayList<>();
+
+        int index = proposerItemId;
+        ProposerItem proposerItem = createProposerItem(index,"BANNER_" + index);
+        proposerItem.setParentId(proposerParentId);
+        proposerItems.add(proposerItem);
+
+        proposerItemId ++;
+
+        return proposerItems;
     }
 
     public List<ProposerItem> generateProposerItemsTypeOne(int size, String proposerParentId) {

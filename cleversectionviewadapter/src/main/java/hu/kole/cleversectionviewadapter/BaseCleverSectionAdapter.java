@@ -2,13 +2,16 @@ package hu.kole.cleversectionviewadapter;
 
 import android.content.res.Resources;
 import android.graphics.PointF;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import hu.kole.cleversectionviewadapter.draganddrop.DragInfo;
@@ -45,6 +48,10 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
     private DragManager dragManager;
     private int scrollState = RecyclerView.SCROLL_STATE_IDLE;
     private final PointF lastTouchPoint = new PointF(); // used to create ShadowBuilder
+
+    private Handler mDelayHandler = new Handler();
+    private long mLastUpdateTime = -1;
+    private long DELAY_BETWEEN_UPDATES = 500;
 
     public BaseCleverSectionAdapter(List<TSection> sectionList) {
 
@@ -98,16 +105,20 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
         return sectionItems;
     }
 
-    public void updateDataSet(List<TSection> data) {
+    public void updateDataSet(final List<TSection> data) {
+        mDelayHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isLoadMoreProgressVisible = false;
 
-        isLoadMoreProgressVisible = false;
+                sections.clear();
 
-        this.sections.clear();
+                sections.addAll(data);
+                updateDataSetAfterChanged();
 
-        this.sections.addAll(data);
-        this.updateDataSetAfterChanged();
-
-        addEndlessScrollListener();
+                addEndlessScrollListener();
+            }
+        },calculateDelay());
     }
 
     public void updateDataSetAfterChanged() {
@@ -116,6 +127,31 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
         this.allRowItems.addAll(copySectionsIntoRealObjects());
 
         this.notifyDataSetChanged();
+    }
+
+    /**
+     * Calculate delay between call of method updateDataSet. It's essential for schedule often successively again method calls.
+     * @return
+     */
+    public synchronized long calculateDelay() {
+        long currentTime = System.currentTimeMillis();
+
+        if (mLastUpdateTime == -1 || currentTime > mLastUpdateTime) {
+            mLastUpdateTime = currentTime + DELAY_BETWEEN_UPDATES;
+            return 0;
+        }
+
+        mLastUpdateTime = mLastUpdateTime + DELAY_BETWEEN_UPDATES;
+
+        return (mLastUpdateTime - currentTime) + DELAY_BETWEEN_UPDATES;
+    }
+
+    public void setDelayBetweenUpdates(long delay) {
+        this.DELAY_BETWEEN_UPDATES = delay;
+    }
+
+    public long getDelayBetweenUpdates() {
+        return this.DELAY_BETWEEN_UPDATES;
     }
 
     public List<TSection> getDataSet() {
@@ -162,6 +198,9 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
     }
 
     public TSectionItem getItemAtPosition(int position) {
+        if (allRowItems.size() == 0)
+            updateDataSetAfterChanged();
+
         return this.allRowItems.get(position);
     }
 
