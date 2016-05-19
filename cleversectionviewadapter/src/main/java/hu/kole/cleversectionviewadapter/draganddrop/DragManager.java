@@ -3,6 +3,7 @@ package hu.kole.cleversectionviewadapter.draganddrop;
 import android.graphics.PointF;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 
@@ -63,7 +64,8 @@ public class DragManager implements View.OnDragListener {
 
                     if (scheduleNextMove)
                         animator.isRunning(new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() {
-                            @Override public void onAnimationsFinished() {
+                            @Override
+                            public void onAnimationsFinished() {
                                 if (nextMoveTouchPoint.equals(MIN_VALUE, MIN_VALUE)) { return; }
 
                                 final int fromPosition = adapter.getPositionForId((int) itemId);
@@ -72,6 +74,7 @@ public class DragManager implements View.OnDragListener {
 
                                 if (child != null) {
                                     final int toPosition = recyclerView.getChildViewHolder(child).getAdapterPosition();
+
                                     if (adapter.move(fromPosition, toPosition)) {
 
                                         if (fromPosition == 0 || toPosition == 0) {

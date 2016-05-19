@@ -8,17 +8,24 @@ import android.view.View;
 import hu.kole.cleversectionviewadapter.draganddrop.DragInfo;
 import hu.kole.cleversectionviewadapter.draganddrop.NoForegroundShadowBuilder;
 import hu.kole.cleversectionviewadapter.BaseCleverSectionAdapter;
+import hu.kole.cleversectionviewadapter.model.BaseSectionItemModel;
 
 /**
  * Created by koleszargergo on 4/19/16.
  */
-public class BaseDragAndDropViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+public class BaseDragAndDropViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener, View.OnClickListener {
 
     private final BaseCleverSectionAdapter<?,?,?,?,?> mAdapter;
+    private BaseCleverSectionAdapter.OnItemClickListener<BaseSectionItemModel> mOnSectionItemClickListener;
 
     public BaseDragAndDropViewHolder(View itemView, BaseCleverSectionAdapter adapter) {
         super(itemView);
         mAdapter = adapter;
+        itemView.setOnClickListener(this);
+    }
+
+    public void setOnSectionItemClickListener(BaseCleverSectionAdapter.OnItemClickListener<BaseSectionItemModel> listener) {
+        mOnSectionItemClickListener = listener;
     }
 
     public View.DragShadowBuilder getShadowBuilder(View itemView, Point touchPoint) {
@@ -51,5 +58,12 @@ public class BaseDragAndDropViewHolder extends RecyclerView.ViewHolder implement
         startDrag();
 
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (mOnSectionItemClickListener != null) {
+            mOnSectionItemClickListener.onItemClick(v,mAdapter.getItemAtPosition(getAdapterPosition()));
+        }
     }
 }

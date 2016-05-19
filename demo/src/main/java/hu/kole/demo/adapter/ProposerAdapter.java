@@ -97,10 +97,10 @@ public class ProposerAdapter extends BaseCleverSectionAdapter<Proposer,ProposerI
     @Override
     public boolean isDraggingEnabledAtItemPosition(Proposer section,ProposerItem fromItem, ProposerItem toItem) {
 
-        if ((fromItem.getSpanType() == BaseSectionItemModel.SPAN_TYPE.GRID_TYPE && section.getItemIndexInSection(fromItem) == 0) ||
-                (toItem.getSpanType() == BaseSectionItemModel.SPAN_TYPE.GRID_TYPE && section.getItemIndexInSection(toItem) == 0)) {
-            return false;
-        }
+//        if ((fromItem.getSpanType() == BaseSectionItemModel.SPAN_TYPE.GRID_TYPE && section.getItemIndexInSection(fromItem) == 0) ||
+//                (toItem.getSpanType() == BaseSectionItemModel.SPAN_TYPE.GRID_TYPE && section.getItemIndexInSection(toItem) == 0)) {
+//            return false;
+//        }
 
         return super.isDraggingEnabledAtItemPosition(section,fromItem, toItem);
     }

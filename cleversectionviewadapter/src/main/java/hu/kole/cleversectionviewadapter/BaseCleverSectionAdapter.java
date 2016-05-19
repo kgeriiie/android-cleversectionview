@@ -51,7 +51,7 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
 
     private Handler mDelayHandler = new Handler();
     private long mLastUpdateTime = -1;
-    private long DELAY_BETWEEN_UPDATES = 500;
+    private long DELAY_BETWEEN_UPDATES = 0;
 
     public BaseCleverSectionAdapter(List<TSection> sectionList) {
 
@@ -370,7 +370,7 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
         } else {
             onBindItemViewHolder((TItemViewHolder) holder,item, item.getLayoutType());
 
-            holder.itemView.setOnClickListener(handleOnItemClick());
+            ((TItemViewHolder) holder).setOnSectionItemClickListener((OnItemClickListener<BaseSectionItemModel>) mOnSectionItemClickListener);
 
             if (isDragAndDropEnabled && isDraggingEnabledAtItemPosition(section,item,item)) {
                 holder.itemView.setOnLongClickListener((TItemViewHolder) holder);

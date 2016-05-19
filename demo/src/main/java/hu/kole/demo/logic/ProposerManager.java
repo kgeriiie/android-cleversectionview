@@ -42,8 +42,8 @@ public class ProposerManager {
     }
 
     public Proposer generateProposerBanner() {
-        Proposer p = createProposer(proposerItemId, "BANNER_BANNER", false, false);
-        proposerItemId ++;
+        Proposer p = createProposer(proposerId, "BANNER_BANNER", false, false);
+        proposerId ++;
         return p;
     }
 
@@ -120,7 +120,7 @@ public class ProposerManager {
         return proposerItems;
     }
 
-    private Proposer createProposer(int index, String title) {
+    private synchronized Proposer createProposer(int index, String title) {
         Proposer proposer = new Proposer();
         proposer.id = PROPOSER_ID + index;
         proposer.title = title;

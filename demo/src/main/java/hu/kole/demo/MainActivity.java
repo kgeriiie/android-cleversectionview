@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new ProposerAdapter(this,proposers);
         adapter.setDragAndDropEnabled(false);
+        adapter.setDelayBetweenUpdates(500);
 
 //        adapter.setOnEndlessScrollListener(new EndlessScrollListener(mLayoutManager,adapter,true) {
 //            @Override
