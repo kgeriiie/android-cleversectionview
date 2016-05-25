@@ -62,8 +62,10 @@ public class BaseDragAndDropViewHolder extends RecyclerView.ViewHolder implement
 
     @Override
     public void onClick(View v) {
-        if (mOnSectionItemClickListener != null) {
-            mOnSectionItemClickListener.onItemClick(v,mAdapter.getItemAtPosition(getAdapterPosition()));
+        int position = getAdapterPosition();
+
+        if (mOnSectionItemClickListener != null && position > -1) {
+            mOnSectionItemClickListener.onItemClick(v,mAdapter.getItemAtPosition(position));
         }
     }
 }
