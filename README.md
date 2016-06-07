@@ -21,7 +21,7 @@ Install
 Gradle:
 
 ```gradle
-compile 'hu.kole.csrva:cleversectionviewadapter:1.0.3'
+compile 'hu.kole.csrva:cleversectionviewadapter:1.0.7'
 ```
 
 Usage
