@@ -2,6 +2,7 @@ package hu.kole.demo.adapter;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,6 +103,10 @@ public class ProposerAdapter extends BaseCleverSectionAdapter<Proposer,ProposerI
 //            return false;
 //        }
 
-        return super.isDraggingEnabledAtItemPosition(section,fromItem, toItem);
+        Log.d("test--","draggable: " + section.isDraggable);
+
+        return section.isDraggable;
+
+//        return super.isDraggingEnabledAtItemPosition(section,fromItem, toItem);
     }
 }

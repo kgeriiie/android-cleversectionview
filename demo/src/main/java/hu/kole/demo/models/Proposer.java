@@ -16,6 +16,8 @@ public class Proposer extends BaseSectionModel {
     public String title;
     public List<ProposerItem> proposerItems = new ArrayList<>();
 
+    public boolean isDraggable = false;
+
     @Override
     public String getId() {
         return id;

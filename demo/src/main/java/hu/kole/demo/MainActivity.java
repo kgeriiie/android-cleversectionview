@@ -8,6 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     ProposerAdapter adapter;
     List<Proposer> proposers = new ArrayList<>();
 
+    boolean isDragEnabled = true;
+
     //For simulate data downloading delay.
     private int[] delay = {1000,1010,1020,1040};
 
@@ -38,14 +41,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        findViewById(R.id.action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isDragEnabled = !isDragEnabled;
+
+                Toast.makeText(getApplicationContext(), "Drag engedélyezve: " + isDragEnabled, Toast.LENGTH_SHORT).show();
+
+                generateProposers();
+
+                fillProposers(proposers);
+
+                adapter.updateDataSet(proposers);
+            }
+        });
+
         listRv = (RecyclerView) findViewById(R.id.testRl);
         mLayoutManager = new GridLayoutManager(getApplicationContext(),2,GridLayoutManager.VERTICAL,false);
 
-        proposers.add(ProposerManager.getInstance().generateProposerBanner());
-        proposers.addAll(ProposerManager.getInstance().generateProposers(3));
+        generateProposers();
 
         adapter = new ProposerAdapter(this,proposers);
-        adapter.setDragAndDropEnabled(false);
+        adapter.setDragAndDropEnabled(true);
         adapter.setDelayBetweenUpdates(500);
 
 //        adapter.setOnEndlessScrollListener(new EndlessScrollListener(mLayoutManager,adapter,true) {
@@ -69,6 +86,18 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    private void generateProposers() {
+        proposers = new ArrayList<>();
+
+        proposers.add(ProposerManager.getInstance().generateProposerBanner());
+
+        List<Proposer> pop = ProposerManager.getInstance().generateProposers(3);
+
+        pop.get(0).isDraggable = isDragEnabled;
+
+        proposers.addAll(pop);
     }
 
     private int in,i;

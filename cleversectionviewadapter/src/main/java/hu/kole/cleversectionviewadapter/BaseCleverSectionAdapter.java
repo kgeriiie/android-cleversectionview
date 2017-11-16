@@ -376,6 +376,8 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
                 holder.itemView.setOnLongClickListener((TItemViewHolder) holder);
                 holder.itemView.setVisibility(getDraggingId() == item.getId().hashCode() ? View.INVISIBLE : View.VISIBLE);
                 holder.itemView.postInvalidate();
+            } else {
+                holder.itemView.setOnLongClickListener(null);
             }
         }
     }
