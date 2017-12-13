@@ -201,6 +201,10 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
         if (allRowItems.size() == 0)
             updateDataSetAfterChanged();
 
+        if (position < 0) {
+            return null;
+        }
+
         return this.allRowItems.get(position);
     }
 
@@ -518,6 +522,10 @@ public abstract class BaseCleverSectionAdapter<TSection extends BaseSectionModel
     public boolean move(int fromPosition, int toPosition) {
         TSectionItem itemAtFromPosition = getItemAtPosition(fromPosition);
         TSectionItem itemAtToPosition = getItemAtPosition(toPosition);
+
+        if (itemAtFromPosition == null || itemAtToPosition == null) {
+            return false;
+        }
 
         TSection fromSection = getSectionOfItem(itemAtFromPosition);
         TSection toSection = getSectionOfItem(itemAtToPosition);

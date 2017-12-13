@@ -44,15 +44,21 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.action).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                isDragEnabled = !isDragEnabled;
+//                isDragEnabled = !isDragEnabled;
 
-                Toast.makeText(getApplicationContext(), "Drag engedélyezve: " + isDragEnabled, Toast.LENGTH_SHORT).show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "Drag engedélyezve: " + isDragEnabled, Toast.LENGTH_SHORT).show();
 
-                generateProposers();
+                        generateProposers();
 
-                fillProposers(proposers);
+                        fillProposers(proposers);
 
-                adapter.updateDataSet(proposers);
+                        adapter.updateDataSet(proposers);
+                    }
+                }, 1000);
+
             }
         });
 
